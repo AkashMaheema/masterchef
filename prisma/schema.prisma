@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String?
+  email     String     @unique
+  password  String
+  role      String     @default("USER") // ADMIN or USER
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  recipes   Recipe[]   @relation("UserRecipes")
+  reviews   Review[]
+  favorites Favorite[]
+}
+
+model Recipe {
+  id          String       @id @default(cuid())
+  title       String
+  description String
+  image       String?
+  difficulty  String       @default("EASY") // EASY, MEDIUM, HARD
+  timeToCook  Int          // in minutes
+  servings    Int          @default(1)
+  categoryId  String?
+  authorId    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  author      User         @relation("UserRecipes", fields: [authorId], references: [id], onDelete: Cascade)
+  category    Category?    @relation(fields: [categoryId], references: [id])
+  ingredients Ingredient[]
+  steps       Step[]
+  reviews     Review[]
+  favorites   Favorite[]
+}
+
+model Ingredient {
+  id       String @id @default(cuid())
+  name     String
+  amount   Float
+  unit     String
+  recipeId String
+
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model Step {
+  id          String @id @default(cuid())
+  description String
+  order       Int
+  recipeId    String
+
+  recipe      Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id      String   @id @default(cuid())
+  name    String   @unique
+  recipes Recipe[]
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int
+  comment   String?
+  userId    String
+  recipeId  String
+  createdAt DateTime @default(now())
+
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe    Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId])
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  recipeId  String
+  createdAt DateTime @default(now())
+
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe    Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId])
+}
