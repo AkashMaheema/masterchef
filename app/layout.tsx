@@ -6,6 +6,7 @@ import { AuthProvider } from "@/components/auth-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
+import { AiChatbot } from "@/components/shared/ai-chatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,6 +46,7 @@ export default function RootLayout({
             <main className="flex-1 flex flex-col w-full">
               {children}
             </main>
+            <AiChatbot />
             <Footer />
           </AuthProvider>
           <Toaster />

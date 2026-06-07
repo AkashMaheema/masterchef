@@ -33,6 +33,13 @@ export function Navbar() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           <Link href="/recipes" className="transition-colors hover:text-orange-500">Recipes</Link>
+          <Link href="/fridge" className="transition-colors hover:text-orange-500">Fridge</Link>
+          <Link href="/meal-planner" className="transition-colors hover:text-orange-500">Meal Planner</Link>
+          <Link href="/shopping-list" className="transition-colors hover:text-orange-500">Shopping List</Link>
+          <Link href="/leftovers" className="transition-colors hover:text-orange-500">Leftovers</Link>
+          <Link href="/taste-profile" className="transition-colors hover:text-orange-500">Taste Profile</Link>
+          <Link href="/recommendations" className="transition-colors hover:text-orange-500">Picks</Link>
+          <Link href="/challenges" className="transition-colors hover:text-orange-500">Challenges</Link>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -91,6 +98,13 @@ export function Navbar() {
                 </Link>
                 <nav className="flex flex-col gap-4">
                   <Link href="/recipes" className="text-lg font-medium hover:text-orange-500">Recipes</Link>
+                  <Link href="/fridge" className="text-lg font-medium hover:text-orange-500">Fridge</Link>
+                  <Link href="/meal-planner" className="text-lg font-medium hover:text-orange-500">Meal Planner</Link>
+                  <Link href="/shopping-list" className="text-lg font-medium hover:text-orange-500">Shopping List</Link>
+                  <Link href="/leftovers" className="text-lg font-medium hover:text-orange-500">Leftovers</Link>
+                  <Link href="/taste-profile" className="text-lg font-medium hover:text-orange-500">Taste Profile</Link>
+                  <Link href="/recommendations" className="text-lg font-medium hover:text-orange-500">Picks</Link>
+                  <Link href="/challenges" className="text-lg font-medium hover:text-orange-500">Challenges</Link>
                   {!session && (
                     <div className="flex flex-col gap-2 mt-4">
                       <Link href="/login" className={buttonVariants({ variant: "outline" })}>Log in</Link>

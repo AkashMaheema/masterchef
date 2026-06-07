@@ -8,6 +8,11 @@ import { Clock, ChefHat, Users, Star, ArrowLeft, Download, Maximize2, Play, Chec
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { RecipeRemixPanel } from "@/components/recipes/recipe-remix-panel"
+import { SmartSubstitutionPanel } from "@/components/recipes/smart-substitution-panel"
+import { CookingModeAssistant } from "@/components/recipes/cooking-mode-assistant"
+import { DifficultyCoachPanel } from "@/components/recipes/difficulty-coach-panel"
+import { RecipeScorePanel } from "@/components/recipes/recipe-score-panel"
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
 import Link from "next/link"
@@ -107,6 +112,10 @@ export function RecipeDetailClient({ recipe }: { recipe: any }) {
 
         {/* Vertical Layout Sections */}
 
+        <RecipeRemixPanel recipeId={recipe.id} />
+
+        <RecipeScorePanel recipeId={recipe.id} />
+
         {/* Ingredients Section */}
         <section className="mb-16">
           <div className="bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 md:p-10">
@@ -141,6 +150,10 @@ export function RecipeDetailClient({ recipe }: { recipe: any }) {
           </div>
         </section>
 
+        <SmartSubstitutionPanel recipeId={recipe.id} ingredients={recipe.ingredients} />
+
+        <DifficultyCoachPanel recipeId={recipe.id} />
+
         {/* Instructions Section */}
         <section className="mb-16 md:px-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
@@ -149,33 +162,36 @@ export function RecipeDetailClient({ recipe }: { recipe: any }) {
               <DialogTrigger className={buttonVariants({ variant: "default", className: "rounded-full bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 shadow-xl" })}>
                 <Maximize2 className="mr-2 h-4 w-4" /> Cooking Mode
               </DialogTrigger>
-              <DialogContent className="max-w-4xl h-[80vh] rounded-3xl p-0 overflow-hidden bg-slate-950 text-white border-0">
-                <div className="flex flex-col h-full items-center justify-center p-8 md:p-16 text-center relative">
-                  <div className="absolute top-6 left-6 text-slate-500 font-medium tracking-widest uppercase text-sm">
-                    Step {activeStep + 1} of {recipe.steps.length}
-                  </div>
-                  
-                  <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight max-w-3xl">
-                    {recipe.steps[activeStep]?.description}
-                  </h2>
-
-                  <div className="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-8 px-8">
-                    <Button variant="ghost" className="text-slate-400 hover:text-white"
-                      disabled={activeStep === 0} onClick={() => setActiveStep(prev => prev - 1)}>
-                      Previous
-                    </Button>
-                    
-                    <div className="flex gap-2">
-                      {recipe.steps.map((_: any, idx: number) => (
-                        <div key={idx} className={`h-2 rounded-full transition-all ${idx === activeStep ? 'w-8 bg-orange-500' : 'w-2 bg-slate-800'}`} />
-                      ))}
+              <DialogContent className="h-[86vh] max-w-6xl rounded-3xl border-0 bg-slate-950 p-0 text-white overflow-hidden">
+                <div className="grid h-full min-h-0 grid-rows-[1fr_340px] md:grid-cols-[1fr_340px] md:grid-rows-1">
+                  <div className="relative flex min-h-0 flex-col items-center justify-center p-8 text-center md:p-16">
+                    <div className="absolute left-6 top-6 text-sm font-medium uppercase tracking-widest text-slate-500">
+                      Step {activeStep + 1} of {recipe.steps.length}
                     </div>
+                    
+                    <h2 className="max-w-3xl text-3xl font-bold leading-tight tracking-tight md:text-5xl">
+                      {recipe.steps[activeStep]?.description}
+                    </h2>
 
-                    <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-8"
-                      disabled={activeStep === recipe.steps.length - 1} onClick={() => setActiveStep(prev => prev + 1)}>
-                      Next Step
-                    </Button>
+                    <div className="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-4 px-6 md:gap-8 md:px-8">
+                      <Button variant="ghost" className="text-slate-400 hover:text-white"
+                        disabled={activeStep === 0} onClick={() => setActiveStep(prev => prev - 1)}>
+                        Previous
+                      </Button>
+                      
+                      <div className="flex gap-2">
+                        {recipe.steps.map((_: any, idx: number) => (
+                          <div key={idx} className={`h-2 rounded-full transition-all ${idx === activeStep ? 'w-8 bg-orange-500' : 'w-2 bg-slate-800'}`} />
+                        ))}
+                      </div>
+
+                      <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-5 md:px-8"
+                        disabled={activeStep === recipe.steps.length - 1} onClick={() => setActiveStep(prev => prev + 1)}>
+                        Next
+                      </Button>
+                    </div>
                   </div>
+                  <CookingModeAssistant recipeId={recipe.id} stepIndex={activeStep} />
                 </div>
               </DialogContent>
             </Dialog>

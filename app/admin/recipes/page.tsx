@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
-import { buttonVariants } from "@/components/ui/button"
 import { Plus, Edit, Trash } from "lucide-react"
 
 export default async function AdminRecipes() {
@@ -15,7 +14,7 @@ export default async function AdminRecipes() {
         <h1 className="text-3xl font-bold tracking-tight">Manage Recipes</h1>
         <Link 
           href="/admin/recipes/new" 
-          className={buttonVariants({ className: "bg-orange-500 hover:bg-orange-600 text-white" })}
+          className="inline-flex h-8 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-transparent bg-orange-500 bg-clip-padding px-2.5 text-sm font-medium text-white outline-none transition-all hover:bg-orange-600 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:pointer-events-none disabled:opacity-50"
         >
           <Plus className="mr-2 h-4 w-4" /> Create Recipe
         </Link>
